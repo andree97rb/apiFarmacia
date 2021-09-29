@@ -20,7 +20,7 @@ class TrabajadorController extends Controller
 
     public function store(Request $request)
     {
-        if (!$request->nombres || !$request->apellidoPaterno || !$request->apellidoMaterno || !$request->tipoDocumento || !$request->numeroDocumento || !$request->correo  || !$request->celular)
+        if (!$request->nombres || !$request->apellidoPaterno || !$request->apellidoMaterno || !$request->tipoDocumento || !$request->numeroDocumento || !$request->correo)
 		{         
 			return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan datos para acceder a su solicitud.'])], 422);
         }
@@ -48,7 +48,7 @@ class TrabajadorController extends Controller
 
 		if (!$trabajador)
 		{
-			return response()->json(['errors'=>array(['code'=>404,'message'=>'No se encuentra un trabajador con ese código.'])],404);
+			return response()->json(['errors'=>array(['code'=>404,'message'=>'No se encontró ningún trabajador con este código.'])], 404);
 		}
 
 		$nombres=$request->nombres;
@@ -59,55 +59,9 @@ class TrabajadorController extends Controller
 		$correo=$request->correo;
 		$celular=$request->celular;
 
-		if ($request->method()=='PATCH')
+		if (!$nombres || !$apellidoPaterno || !$apellidoMaterno || !$tipoDocumento || !$numeroDocumento || !$correo)
 		{
-			$bandera=false;
-
-			if ($nombres !=null && $nombres!='')
-			{
-				$trabajador->nombres=$nombres;
-				$bandera=true;
-			}
-
-			if ($apellidoPaterno !=null && $apellidoPaterno!='')
-			{
-				$trabajador->apellidoPaterno=$apellidoPaterno;
-				$bandera=true;
-			}
-            if ($apellidoMaterno !=null && $apellidoMaterno!='')
-			{
-				$trabajador->apellidoMaterno=$apellidoMaterno;
-				$bandera=true;
-			}
-            if ($tipoDocumento !=null && $tipoDocumento!='')
-			{
-				$trabajador->tipoDocumento=$tipoDocumento;
-				$bandera=true;
-			}
-            if ($numeroDocumento !=null && $numeroDocumento!='')
-			{
-				$trabajador->numeroDocumento=$numeroDocumento;
-				$bandera=true;
-			}
-            if ($correo !=null && $correo!='')
-			{
-				$trabajador->correo=$correo;
-				$bandera=true;
-			}
-            if ($celular !=null && $celular!='')
-			{
-				$trabajador->celular=$celular;
-				$bandera=true;
-			}
-			else
-			{
-				return response()->json(['errors'=>array(['code'=>304,'message'=>'No se ha modificado ningún dato de trabajador.'])],304);
-			}
-		}
-
-		if (!$trabajador)
-		{
-			return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan valores para completar el procesamiento.'])],422);
+			return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan valores para completar el procesamiento.'])], 422);
 		}
 
 		$trabajador->nombres=$nombres;
@@ -119,8 +73,6 @@ class TrabajadorController extends Controller
 		$trabajador->celular=$celular;
 
 		$trabajador->save();
-		return response()->json(['status'=>'ok','data'=>$trabajador],200);
-
+		return response()->json(['status'=>'ok','data'=>$trabajador], 200);
 	}
-
 }

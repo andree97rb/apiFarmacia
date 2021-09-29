@@ -48,7 +48,7 @@ class MarcaController extends Controller
 
 		if (!$marca)
 		{
-			return response()->json(['errors'=>array(['code'=>404,'message'=>'No se encuentra un marca con ese código.'])],404);
+			return response()->json(['errors'=>array(['code'=>404,'message'=>'No se encuentra ninguna marca con este código.'])], 404);
 		}
 
 		$nombre=$request->nombre;
@@ -58,39 +58,38 @@ class MarcaController extends Controller
 		{
 			$bandera=false;
 
-			if ($nombre !=null && $nombre!='')
+			if ($nombre != null && $nombre != '')
 			{
 				$marca->nombre=$nombre;
 				$bandera=true;
 			}
 
-			if ($vigencia !=null && $vigencia!='')
+			if ($vigencia != null && $vigencia != '')
 			{
 				$marca->vigencia=$vigencia;
 				$bandera=true;
 			}
+
 			if ($bandera)
 			{
 				$marca->save();
-
-				return response()->json(['status'=>'ok','data'=>$marca],200);
+				return response()->json(['status'=>'ok','data'=> $marca], 200);
 			}
 			else
 			{
-				return response()->json(['errors'=>array(['code'=>304,'message'=>'No se ha modificado ningún dato de la marca.'])],304);
+				return response()->json(['errors'=>array(['code'=>304,'message'=>'No se ha modificado ningún dato de la marca.'])], 304);
 			}
 		}
 
-		if (!$marca)
+		if (!$nombre)
 		{
-			return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan valores para completar el procesamiento.'])],422);
+			return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan valores para completar el procesamiento.'])], 422);
 		}
 
 		$marca->nombre=$nombre;
 		$marca->vigencia=$vigencia;
 
 		$marca->save();
-		return response()->json(['status'=>'ok','data'=>$marca],200);
-
+		return response()->json(['status'=>'ok','data'=>$marca], 200);
 	}
 }

@@ -20,7 +20,7 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
-        if (!$request->nombre || !$request->idMarca)
+        if (!$request->nombre || $request->idMarca == -1 || $request->idMarca == 0)
 		{         
 			return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan datos para acceder a su solicitud.'])], 422);
         }
@@ -48,50 +48,37 @@ class ProductoController extends Controller
 
 		if (!$producto)
 		{
-			return response()->json(['errors'=>array(['code'=>404,'message'=>'No se encuentra un producto con ese código.'])],404);
+			return response()->json(['errors'=>array(['code'=>404,'message'=>'No se encontró ningún producto con este código.'])], 404);
 		}
 
 		$nombre=$request->nombre;
 		$vigencia=$request->vigencia;
 		$idMarca=$request->idMarca;
 
-
 		if ($request->method()=='PATCH')
 		{
 			$bandera=false;
 
-			if ($nombre !=null && $nombre!='')
-			{
-				$producto->nombre=$nombre;
-				$bandera=true;
-			}
-
-			if ($vigencia !=null && $vigencia!='')
+			if ($vigencia != null && $vigencia != '')
 			{
 				$producto->vigencia=$vigencia;
 				$bandera=true;
 			}
 
-            if ($idMarca !=null && $idMarca!='')
-			{
-				$producto->idMarca=$idMarca;
-				$bandera=true;
-			}
 			if ($bandera)
 			{
 				$producto->save();
-
-				return response()->json(['status'=>'ok','data'=>$producto],200);
+				return response()->json(['status'=>'ok','data'=>$producto], 200);
 			}
 			else
 			{
-				return response()->json(['errors'=>array(['code'=>304,'message'=>'No se ha modificado ningún dato del producto.'])],304);
+				return response()->json(['errors'=>array(['code'=>304,'message'=>'No se ha modificado ningún dato del producto.'])], 304);
 			}
 		}
 
-		if (!$producto)
+		if (!$nombre || $idMarca == -1 || $idMarca == 0)
 		{
-			return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan valores para completar el procesamiento.'])],422);
+			return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan valores para completar el procesamiento.'])], 422);
 		}
 
 		$producto->nombre=$nombre;
@@ -99,8 +86,6 @@ class ProductoController extends Controller
 		$producto->idMarca=$idMarca;
 
 		$producto->save();
-		return response()->json(['status'=>'ok','data'=>$producto],200);
-
+		return response()->json(['status'=>'ok','data'=>$producto], 200);
 	}
-
 }

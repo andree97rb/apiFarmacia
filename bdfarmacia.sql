@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-09-2021 a las 01:41:48
+-- Tiempo de generación: 29-09-2021 a las 07:06:56
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 8.0.10
 
@@ -33,6 +33,17 @@ CREATE TABLE `marca` (
   `vigencia` bit(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `marca`
+--
+
+INSERT INTO `marca` (`id`, `nombre`, `vigencia`) VALUES
+(1, 'Marca1', b'1'),
+(2, 'Marca2', b'1'),
+(3, 'Marca3', b'1'),
+(4, 'Marca4', b'1'),
+(5, 'Marca5', b'1');
+
 -- --------------------------------------------------------
 
 --
@@ -45,6 +56,13 @@ CREATE TABLE `producto` (
   `vigencia` bit(1) NOT NULL,
   `idMarca` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+INSERT INTO `producto` (`id`, `nombre`, `vigencia`, `idMarca`) VALUES
+(1, 'Producto1', b'1', 2);
 
 -- --------------------------------------------------------
 
@@ -60,8 +78,16 @@ CREATE TABLE `trabajador` (
   `tipoDocumento` enum('DNI','Carnet Extranjeria','Pasaporte') COLLATE utf8_unicode_ci NOT NULL,
   `numeroDocumento` char(12) COLLATE utf8_unicode_ci NOT NULL,
   `correo` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `celular` char(9) COLLATE utf8_unicode_ci NOT NULL
+  `celular` char(9) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `trabajador`
+--
+
+INSERT INTO `trabajador` (`id`, `nombres`, `apellidoPaterno`, `apellidoMaterno`, `tipoDocumento`, `numeroDocumento`, `correo`, `celular`) VALUES
+(1, 'Nombres1', 'ApellidoPaterno1', 'ApellidoMaterno1', 'Carnet Extranjeria', '87654321', 'nombres1.apellido1@gmail.com', '987654321'),
+(2, 'Nombres2', 'ApellidoPaterno2', 'ApellidoMaterno2', 'DNI', '12345678', 'abcde@gmail.com', NULL);
 
 -- --------------------------------------------------------
 
@@ -73,8 +99,17 @@ CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
   `nombre` char(8) COLLATE utf8_unicode_ci NOT NULL,
   `clave` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `vigencia` bit(1) NOT NULL,
   `idTrabajador` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `nombre`, `clave`, `vigencia`, `idTrabajador`) VALUES
+(1, 'user123', '123456', b'0', 2),
+(2, 'user111', 'nombres111', b'1', 1);
 
 --
 -- Índices para tablas volcadas
@@ -114,25 +149,25 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `marca`
 --
 ALTER TABLE `marca`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `trabajador`
 --
 ALTER TABLE `trabajador`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas

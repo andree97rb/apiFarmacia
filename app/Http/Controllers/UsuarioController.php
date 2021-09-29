@@ -20,7 +20,7 @@ class UsuarioController extends Controller
 
     public function store(Request $request)
     {
-        if (!$request->nombre || !$request->clave || !$request->idTrabajador)
+        if (!$request->nombre || !$request->clave || $request->idTrabajador == -1 || $request->idTrabajador == 0)
 		{         
 			return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan datos para acceder a su solicitud.'])], 422);
         }
@@ -48,35 +48,24 @@ class UsuarioController extends Controller
 
 		if (!$usuario)
 		{
-			return response()->json(['errors'=>array(['code'=>404,'message'=>'No se encuentra un usuario con ese código.'])],404);
+			return response()->json(['errors'=>array(['code'=>404,'message'=>'No se encontró ningún usuario con este código.'])], 404);
 		}
 
 		$nombre=$request->nombre;
 		$clave=$request->clave;
-		$idTrabajador=$request->idTrabajador;
-
+		$vigencia=$request->vigencia;
+		$idTrabajador=$request->idTrabajador;		
 
 		if ($request->method()=='PATCH')
 		{
 			$bandera=false;
-
-			if ($nombre !=null && $nombre!='')
+			
+			if ($vigencia != null && $vigencia != '')
 			{
-				$usuario->nombre=$nombre;
+				$usuario->vigencia=$vigencia;
 				$bandera=true;
 			}
 
-			if ($clave !=null && $clave!='')
-			{
-				$usuario->clave=$clave;
-				$bandera=true;
-			}
-
-            if ($idTrabajador !=null && $idTrabajador!='')
-			{
-				$usuario->idTrabajador=$idTrabajador;
-				$bandera=true;
-			}
 			if ($bandera)
 			{
 				$usuario->save();
@@ -89,17 +78,17 @@ class UsuarioController extends Controller
 			}
 		}
 
-		if (!$usuario)
+		if (!$nombre || !$clave || $idTrabajador == -1 || $idTrabajador == 0)
 		{
 			return response()->json(['errors'=>array(['code'=>422,'message'=>'Faltan valores para completar el procesamiento.'])],422);
 		}
 
 		$usuario->nombre=$nombre;
 		$usuario->clave=$clave;
+		$usuario->vigencia=$vigencia;
 		$usuario->idTrabajador=$idTrabajador;
 
 		$usuario->save();
-		return response()->json(['status'=>'ok','data'=>$usuario],200);
-
+		return response()->json(['status'=>'ok','data'=>$usuario], 200);
 	}
 }

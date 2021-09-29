@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Usuario extends Model
 {
     protected $table = "usuario";
-    protected $fillable = array('nombre', 'clave', 'idTrabajador');
+    protected $fillable = array('nombre', 'clave', 'vigencia', 'idTrabajador');
     public $timestamps = false;
     
     public function trabajador() {

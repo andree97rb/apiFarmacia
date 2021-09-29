@@ -13,6 +13,6 @@ class Trabajador extends Model
 
     public function usuario()
     {
-        return $this->hasMany('App\Models\Usuario', 'idTrabajador');
+        return $this->hasOne('App\Models\Usuario', 'idTrabajador');
     }
 }
